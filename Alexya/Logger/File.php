@@ -125,9 +125,13 @@ class File extends AbstractLogger
      * @param string                       $log_format  The format of each log entry
      * @param array                        $log_levels  What levels should the logger log
      */
-    public function __construct(Directory $directory, string $name_format = "", string $log_format = "", array $log_levels = [])
-    {
-        $this->_directory   = $directory;
+    public function __construct(
+        Directory $directory,
+        string    $name_format = "",
+        string    $log_format  = "",
+        array     $log_levels  = []
+    ) {
+        $this->_directory = $directory;
 
         if(!empty($name_format)) {
             $this->_name_format = $name_format;

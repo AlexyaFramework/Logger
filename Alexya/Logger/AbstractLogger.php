@@ -215,7 +215,7 @@ abstract class AbstractLogger extends PsrLogger
             throw new InvalidArgumentException("{$level} is not a valid log level!");
         }
 
-        return in_array($level, $this->_log_levels);;
+        return in_array($level, $this->_log_levels);
     }
 
     /**

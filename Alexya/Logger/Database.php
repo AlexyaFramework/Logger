@@ -13,7 +13,7 @@ use \Alexya\Database\Connection;
  *  * The [\Alexya\Database\Connection](../../vendor/alexya-framework/filesystem/Alexya/Database/Connection.php)
  *    object that will be used for interacting with the database.
  *  * A string being the table name.
- *  * An associative array containing the rows and the values to insert, you can insert the followin placeholders:
+ *  * An associative array containing the columns and the values to insert, you can insert the followin placeholders:
  *      * `{YEAR}`, current year.
  *      * `{MONTH}`, current month.
  *      * `{DAY}`, current day.
@@ -113,11 +113,11 @@ class Database extends AbstractLogger
     private $_table_name = "logs";
 
     /**
-     * The array containing the rows and the values to insert.
+     * The array containing the columns and the values to insert.
      *
      * @var string
      */
-    private $_rows = [
+    private $_columns = [
                 "date"    => "{YEAR}-{MONTH}-{DAY}",
                 "caller"  => "{CALLER_CLASS}{CALLER_TYPE}{CALLER_FUNCTION} ({CALLER_FILE}:{CALLER_LINE})",
                 "level"   => "{LEVEL}",
@@ -151,24 +151,24 @@ class Database extends AbstractLogger
      *
      * @param \Alexya\Database\Connection $database   The database connection object.
      * @param string                      $table_name The table where logs should be saved.
-     * @param array                       $rows       The array containing the rows and the values to insert.
+     * @param array                       $columns    The array containing the rows and the values to insert.
      * @param string                      $log_format The format of each log entry
      * @param array                       $log_levels What levels should the logger log
      */
     public function __construct(
         Connection $database,
         string     $table_name = "",
-        array      $rows       = [],
+        array      $columns    = [],
         string     $log_format = "",
         array      $log_levels = []
     ) {
-        $this->_database   = $database;
+        $this->_database = $database;
 
         if(!empty($table_name)) {
             $this->_table_name = $table_name;
         }
-        if(!empty($rows)) {
-            $this->_rows = $rows;
+        if(!empty($columns)) {
+            $this->_columns = $columns;
         }
 
         parent::__construct($log_format, $log_levels);
@@ -192,13 +192,13 @@ class Database extends AbstractLogger
             "LOG"             => $message
         ];
 
-        foreach($this->_rows as $key => $value) {
-            $this->_rows[$key] = $this->_parseContext($value, array_merge($placeholders, $this->_getDefaultPlaceholders()));
+        foreach($this->_columns as $key => $value) {
+            $this->_columns[$key] = $this->_parseContext($value, array_merge($placeholders, $this->_getDefaultPlaceholders()));
         }
 
-        // Append it to the log file
+        // Insert a new row into database
         $query = $Database->insert($this->_table)
-                          ->values($this->_rows)
+                          ->values($this->_columns)
                           ->execute();
         if(!is_numeric($query)) {
             // Something went wrong, idk what to do here...
