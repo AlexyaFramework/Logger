@@ -96,7 +96,7 @@ use \Alexya\Database\Connection;
  *
  * @author Manulaiko <manulaiko@gmail.com>
  */
-class File extends AbstractLogger
+class Database extends AbstractLogger
 {
     /**
      * The database object.
