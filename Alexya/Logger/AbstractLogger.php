@@ -14,8 +14,8 @@ use \Psr\Log\{
  *
  * Base class for all PSR compatible loggerse.
  *
- * The constructor accepts as parameter an array with the log levels that
- * the logger can log.
+ * The constructor accepts as parameter a string being the format that each
+ * log message will have and an array with the log levels that the logger can log.
  *
  * All classes that extends this must implement the `_write` method that accepts as parameter
  * the string to log, this method will write the log message to whatever the child class wants.
@@ -23,9 +23,6 @@ use \Psr\Log\{
  * The method `log` performs the actual loggin and accepts as parameter the log level
  * (see [\Psr\Log\LogLevel](../../vendor/psr/log/Psr/Log/LogLevel) for a list of possibe values) and the
  * string to log.
- *
- * You can also send a third parameter being an array containing the rows and values to insert, this will
- * override the array sent to the constructor.
  *
  * There are also 8 methods for loggin in a specific category:
  *  * `emergency`
@@ -88,7 +85,7 @@ abstract class AbstractLogger extends PsrLogger
      *
      * Example:
      *
-     *     $Logger = new Logger([
+     *     $Logger = new Logger("[{HOUR}:{MINUTE}] ({LEVEL}) {LOG}", [
      *         \Psr\Log\LogLevel::EMERGENCY,
      *         \Psr\Log\LogLevel::ALERT,
      *         \Psr\Log\LogLevel::CRITICAL,
@@ -215,7 +212,7 @@ abstract class AbstractLogger extends PsrLogger
             throw new InvalidArgumentException("{$level} is not a valid log level!");
         }
 
-        return in_array($level, $this->_log_levels);
+        return in_array($level, $this->_log_levels);;
     }
 
     /**

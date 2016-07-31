@@ -48,9 +48,6 @@ use \Alexya\Database\Connection;
  * (see [\Psr\Log\LogLevel](../../vendor/psr/log/Psr/Log/LogLevel) for a list of possibe values) and the
  * string to log.
  *
- * You can also send a third parameter being an array containing the rows and values to insert, this will
- * override the array sent to the constructor.
- *
  * There are also 8 methods for loggin in a specific category:
  *  * `emergency`
  *  * `alert`
