@@ -1,6 +1,12 @@
 # Logger
 Alexya's logger componets
 
+## Contents
+- [Abstract logger](#abstract_logger)
+- [File logger](#file_logger)
+- [Database logger](#database_logger)
+
+<a name="abstract_logger"></a>
 ## Abstract logger
 `\Alexya\Logger\AbstractLogger` is the base class for all different loggers available. It
 is the class that checks which messages can be logged and formats them.
@@ -73,6 +79,7 @@ class Logger extends AbstractLogger
 }
 ```
 
+<a name="file_logger"></a>
 ## File logger
 The class `\Alexya\Logger\File` outputs each log message to a file.
 
@@ -120,6 +127,7 @@ $Logger->info("[{HOUR}:{MINUTE}] ({LEVEL}) {CUSTOM_PLACEHOLDER}", [
 ]); // [00:00] (debug) test
 ```
 
+<a name="database_logger"></a>
 ## Database logger
 The class `\Alexya\Logger\Database` stores each log message in a database table.
 
