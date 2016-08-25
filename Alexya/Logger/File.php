@@ -1,9 +1,9 @@
 <?php
 namespace Alexya\Logger;
 
-use \Alexya\FileSyste\{
+use \Alexya\FileSystem\{
     Directory,
-    File
+    File as FileObject
 };
 
 /**
@@ -150,7 +150,7 @@ class File extends AbstractLogger
     {
         // Append it to the log file
         $file = $this->_getLogFile();
-        $file->append($log_message."\n");
+        $file->append($message."\n");
     }
 
     /**
@@ -158,11 +158,11 @@ class File extends AbstractLogger
      *
      * @return \Alexya\FileSystem\File The log file
      */
-    private function _getLogFile() : File
+    private function _getLogFile() : FileObject
     {
         // Format file name
         $name = $this->_parseContext($this->_name_format, $this->_getDefaultPlaceholders());
 
-        return $this->_directory->getFile($name, true);
+        return $this->_directory->getFile($name, Directory::GET_FILE_NOT_EXISTS_CREATE);
     }
 }
