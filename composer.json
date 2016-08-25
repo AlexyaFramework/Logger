@@ -1,7 +1,7 @@
 {
     "name": "alexya-framework/logger",
     "type": "framework",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "Alexya's Logger",
     "keywords": ["php", "framework", "logger", "php7", "alexya"],
     "license": "GNU",
