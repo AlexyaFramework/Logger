@@ -130,7 +130,7 @@ abstract class AbstractLogger extends PsrLogger
      *
      * @throws \Psr\Log\LogLevel\InvaildArgumentException If `level` isn't any of `\Psr\Log\LogLevel` constants
      */
-    public function log(string $level, string $message, array $context = [])
+    public function log($level, $message, array $context = [])
     {
         // Check if $level is a valid log level
         try {
@@ -143,17 +143,17 @@ abstract class AbstractLogger extends PsrLogger
 
         // Build the placeholders array for logging
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $caller    = $backtrace[1]
+        $caller    = $backtrace[1];
         if($caller["class"] == "Psr\Log\AbstractLogger") {
             $caller = $backtrace[2];
         }
 
         $placeholders = [
-            "CALLER_CLASS"    => $caller["class"],
-            "CALLER_FUNCTION" => $caller["function"],
-            "CALLER_FILE"     => $caller["file"]
-            "CALLER_TYPE"     => $caller["type"],
-            "CALLER_LINE"     => $caller["line"],
+            "CALLER_CLASS"    => ($caller["class"] ?? ""),
+            "CALLER_FUNCTION" => ($caller["function"] ?? ""),
+            "CALLER_FILE"     => ($caller["file"] ?? ""),
+            "CALLER_TYPE"     => ($caller["type"] ?? ""),
+            "CALLER_LINE"     => ($caller["line"] ?? ""),
             "LEVEL"           => $level,
             "LOG"             => $message
         ];
