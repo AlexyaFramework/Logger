@@ -12,7 +12,7 @@ use \Psr\Log\{
 /**
  * Alexya's Abstract Logger.
  *
- * Base class for all PSR compatible loggerse.
+ * Base class for all PSR compatible loggers.
  *
  * The constructor accepts as parameter a string being the format that each
  * log message will have and an array with the log levels that the logger can log.
@@ -20,11 +20,10 @@ use \Psr\Log\{
  * All classes that extends this must implement the `_write` method that accepts as parameter
  * the string to log, this method will write the log message to whatever the child class wants.
  *
- * The method `log` performs the actual loggin and accepts as parameter the log level
- * (see [\Psr\Log\LogLevel](../../vendor/psr/log/Psr/Log/LogLevel) for a list of possibe values) and the
- * string to log.
+ * The method `log` performs the actual logging and accepts as parameter the log level
+ * (see `\Psr\Log\LogLevel` for a list of possible values) and the string to log.
  *
- * There are also 8 methods for loggin in a specific category:
+ * There are also 8 methods for logging in a specific category:
  *  * `emergency`
  *  * `alert`
  *  * `critical`
@@ -38,19 +37,21 @@ use \Psr\Log\{
  *
  * Example:
  *
- *     class Logger extends AbstractLogger
+ * ```php
+ * class Logger extends AbstractLogger
+ * {
+ *     private function _write(string $message)
  *     {
- *         private function _write(string $message)
- *         {
- *             echo $message;
- *         }
+ *         echo $message;
  *     }
+ * }
  *
- *     $logger = new Logger();
- *     $logger->debug("test"); // test
- *     $logger->debug("{LEVEL}: {MESSAGE}", [
- *         "MESSAGE" => "test"
- *     ]); // debug: test
+ * $logger = new Logger();
+ * $logger->debug("test"); // test
+ * $logger->debug("{LEVEL}: {MESSAGE}", [
+ *     "MESSAGE" => "test"
+ * ]); // debug: test
+ * ```
  *
  * @author Manulaiko <manulaiko@gmail.com>
  */
@@ -58,7 +59,7 @@ abstract class AbstractLogger extends PsrLogger
 {
 
     /**
-     * The format of each log entry
+     * The format of each log entry.
      *
      * @var string
      */
@@ -70,34 +71,36 @@ abstract class AbstractLogger extends PsrLogger
      * @var array
      */
     protected $_log_levels = [
-                LogLevel::EMERGENCY,
-                LogLevel::ALERT,
-                LogLevel::CRITICAL,
-                LogLevel::ERROR,
-                LogLevel::WARNING,
-                LogLevel::NOTICE,
-                LogLevel::INFO,
-                LogLevel::DEBUG
-            ];
+            LogLevel::EMERGENCY,
+            LogLevel::ALERT,
+            LogLevel::CRITICAL,
+            LogLevel::ERROR,
+            LogLevel::WARNING,
+            LogLevel::NOTICE,
+            LogLevel::INFO,
+            LogLevel::DEBUG
+    ];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * Example:
      *
-     *     $Logger = new Logger("[{HOUR}:{MINUTE}] ({LEVEL}) {LOG}", [
-     *         \Psr\Log\LogLevel::EMERGENCY,
-     *         \Psr\Log\LogLevel::ALERT,
-     *         \Psr\Log\LogLevel::CRITICAL,
-     *         \Psr\Log\LogLevel::ERROR,
-     *         \Psr\Log\LogLevel::WARNING,
-     *         \Psr\Log\LogLevel::NOTICE,
-     *         \Psr\Log\LogLevel::INFO,
-     *         \Psr\Log\LogLevel::DEBUG
-     *     ]);
+     * ```
+     * $Logger = new Logger("[{HOUR}:{MINUTE}] ({LEVEL}) {LOG}", [
+     *     \Psr\Log\LogLevel::EMERGENCY,
+     *     \Psr\Log\LogLevel::ALERT,
+     *     \Psr\Log\LogLevel::CRITICAL,
+     *     \Psr\Log\LogLevel::ERROR,
+     *     \Psr\Log\LogLevel::WARNING,
+     *     \Psr\Log\LogLevel::NOTICE,
+     *     \Psr\Log\LogLevel::INFO,
+     *     \Psr\Log\LogLevel::DEBUG
+     * ]);
+     * ```
      *
-     * @param string $log_format The format of each log entry
-     * @param array  $log_levels What levels should the logger log
+     * @param string $log_format The format of each log entry.
+     * @param array  $log_levels What levels should the logger log.
      */
     public function __construct(string $log_format = "", array $log_levels = [])
     {
@@ -110,25 +113,27 @@ abstract class AbstractLogger extends PsrLogger
     }
 
     /**
-     * Performs the loggin
+     * Performs the logging.
      *
      * If the `context` array isn't empty the logger will assume that
      * the `message` string contains placeholders and will override the
      * default log format:
      *
-     *     // Default log format is "[{HOUR}:{MINUTE}] ({LEVEL}) {LOG}"
-     *     $Logger->debug("test"); // [00:00] (debug) test
-     *     $Logger->debug("{LEVEL}: {MESSAGE}", [
-     *         "MESSAGE" => "test"
-     *     ]); // debug: test
+     * ```php
+     * // Default log format is "[{HOUR}:{MINUTE}] ({LEVEL}) {LOG}"
+     * $Logger->debug("test"); // [00:00] (debug) test
+     * $Logger->debug("{LEVEL}: {MESSAGE}", [
+     *     "MESSAGE" => "test"
+     * ]); // debug: test
+     * ```
      *
-     * If `level` isn't any of `\Psr\Log\LogLevel` constants will throw a `\Psr\Log\LogLevel\InvalidArgumentException`
+     * If `level` isn't any of `\Psr\Log\LogLevel` constants will throw a `\Psr\Log\LogLevel\InvalidArgumentException`.
      *
-     * @param string $level   Log level
-     * @param string $message Message to log
-     * @param array  $context Custom placeholders
+     * @param string $level   Log level.
+     * @param string $message Message to log.
+     * @param array  $context Custom placeholders.
      *
-     * @throws \Psr\Log\LogLevel\InvaildArgumentException If `level` isn't any of `\Psr\Log\LogLevel` constants
+     * @throws InvalidArgumentException If `level` isn't any of `\Psr\Log\LogLevel` constants.
      */
     public function log($level, $message, array $context = [])
     {
@@ -144,7 +149,7 @@ abstract class AbstractLogger extends PsrLogger
         // Build the placeholders array for logging
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $caller    = $backtrace[1];
-        if($caller["class"] == "Psr\Log\AbstractLogger") {
+        if($caller["class"] === "Psr\\Log\\AbstractLogger") {
             $caller = $backtrace[2];
         }
 
@@ -171,13 +176,13 @@ abstract class AbstractLogger extends PsrLogger
     }
 
     /**
-     * Checks if the logger can log given level
+     * Checks if the logger can log given level.
      *
-     * @param string $level Log level
+     * @param string $level Log level.
      *
-     * @return bool True if logger can log `level`, false if not
+     * @return bool True if logger can log `level`, false if not.
      *
-     * @throws \Psr\Log\LogLevel\InvaildArgumentException If `level` isn't any of `\Psr\Log\LogLevel` constants
+     * @throws InvalidArgumentException If `level` isn't any of `\Psr\Log\LogLevel` constants.
      */
     protected function _canLog(string $level) : bool
     {
@@ -212,16 +217,16 @@ abstract class AbstractLogger extends PsrLogger
             throw new InvalidArgumentException("{$level} is not a valid log level!");
         }
 
-        return in_array($level, $this->_log_levels);;
+        return in_array($level, $this->_log_levels);
     }
 
     /**
-     * Replaces all placeholders in `message` with the placeholders of `context`
+     * Replaces all placeholders in `message` with the placeholders of `context`.
      *
-     * @param string $message Message to parse
-     * @param array  $context Array with placeholders
+     * @param string $message Message to parse.
+     * @param array  $context Array with placeholders.
      *
-     * @return string Parsed message
+     * @return string Parsed message.
      */
     protected function _parseContext(string $message, array $context) : string
     {
@@ -244,9 +249,9 @@ abstract class AbstractLogger extends PsrLogger
     }
 
     /**
-     * Returns an array with available placeholders
+     * Returns an array with available placeholders.
      *
-     * @return array Array with available placeholders
+     * @return array Array with available placeholders.
      */
     protected function _getDefaultPlaceholders() : array
     {
@@ -264,13 +269,13 @@ abstract class AbstractLogger extends PsrLogger
     }
 
     /**
-     * Writes the log message
+     * Writes the log message.
      *
      * All loggers must implement this method so they can decide
-     * how log messages will be saved
+     * how log messages will be saved.
      *
-     * @param string $message Message to log
-     * @param array  $context The default placeholders + user defined placeholders
+     * @param string $message Message to log.
+     * @param array  $context The default placeholders + user defined placeholders.
      */
-    protected abstract function _write(string $message, array $placeholders = []);
+    protected abstract function _write(string $message, array $context = []);
 }
