@@ -7,7 +7,8 @@ use \Alexya\FileSystem\{
 };
 
 /**
- * Alexya's Logger.
+ * File Logger class.
+ * ==================
  *
  * Implements a PSR compatible file logger.
  *
@@ -148,7 +149,7 @@ class File extends AbstractLogger
      * @param string $message Message to log.
      * @param array  $context Custom placeholders.
      */
-    protected function _write(string $message, array $context = [])
+    protected function _write(string $message, array $context = []) : void
     {
         // Append it to the log file
         $file = $this->_getLogFile();

@@ -5,7 +5,8 @@ use \Alexya\Database\Connection;
 use Alexya\Database\QueryBuilder;
 
 /**
- * Alexya's Database Logger.
+ * Database Logger class.
+ * ======================
  *
  * Implements a PSR compatible database logger.
  *
@@ -181,7 +182,7 @@ class Database extends AbstractLogger
      * @param string $message Message to log.
      * @param array  $context Custom placeholders.
      */
-    protected function _write(string $message, array $context = [])
+    protected function _write(string $message, array $context = []) : void
     {
         $query = new QueryBuilder($this->_database);
 
@@ -190,10 +191,6 @@ class Database extends AbstractLogger
                        ->values($this->_columns)
                        ->getQuery();
 
-        $result = $this->_database->insert($query);
-
-        if(!is_numeric($result)) {
-            // Something went wrong, idk what to do here...
-        }
+        $this->_database->insert($query);
     }
 }

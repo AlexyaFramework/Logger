@@ -10,7 +10,8 @@ use \Psr\Log\{
 };
 
 /**
- * Alexya's Abstract Logger.
+ * Abstract Logger class.
+ * ======================
  *
  * Base class for all PSR compatible loggers.
  *
@@ -24,14 +25,14 @@ use \Psr\Log\{
  * (see `\Psr\Log\LogLevel` for a list of possible values) and the string to log.
  *
  * There are also 8 methods for logging in a specific category:
- *  * `emergency`
- *  * `alert`
- *  * `critical`
- *  * `error`
- *  * `warning`
- *  * `notice`
- *  * `info`
- *  * `debug`
+ *  * `emergency`.
+ *  * `alert`.
+ *  * `critical`.
+ *  * `error`.
+ *  * `warning`.
+ *  * `notice`.
+ *  * `info`.
+ *  * `debug`.
  *
  * All of them accepts as parameter the last 2 parameters of the `log` method.
  *
@@ -57,7 +58,6 @@ use \Psr\Log\{
  */
 abstract class AbstractLogger extends PsrLogger
 {
-
     /**
      * The format of each log entry.
      *
@@ -135,7 +135,7 @@ abstract class AbstractLogger extends PsrLogger
      *
      * @throws InvalidArgumentException If `level` isn't any of `\Psr\Log\LogLevel` constants.
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []) : void
     {
         // Check if $level is a valid log level
         try {
@@ -277,5 +277,5 @@ abstract class AbstractLogger extends PsrLogger
      * @param string $message Message to log.
      * @param array  $context The default placeholders + user defined placeholders.
      */
-    protected abstract function _write(string $message, array $context = []);
+    protected abstract function _write(string $message, array $context = []) : void;
 }
